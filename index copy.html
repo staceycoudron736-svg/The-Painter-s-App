@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Spencer's Pro App">
+<meta name="theme-color" content="#C62828">
+<title>Spencer Lorenz — Pro Painter 🔥</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --fire:#E53935; --fire-dark:#B71C1C; --fire-deep:#7F0000;
+  --orange:#FF6D00; --yellow:#FFD600; --amber:#FF8F00;
+  --cream:#FFFDE7; --light:#FFF8F0; --text:#1A1A1A; --muted:#666;
+  --green:#2E7D32; --blue:#1565C0; --purple:#6A1B9A;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--light);color:var(--text);font-size:17px;}
+.container{max-width:800px;margin:0 auto;padding:10px 10px 110px;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#7F0000,#C62828,#FF6D00);
+  border-radius:18px;padding:18px 16px 14px;margin-bottom:12px;
+  box-shadow:0 4px 20px rgba(198,40,40,0.5);}
+.header-row{display:flex;align-items:center;gap:12px;}
+.header-icon{font-size:46px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4));}
+.header-title{color:#fff;font-size:22px;font-weight:900;text-shadow:0 1px 4px rgba(0,0,0,0.5);line-height:1.2;}
+.header-sub{color:#FFD600;font-size:13px;font-weight:700;margin-top:3px;letter-spacing:.3px;}
+.header-date{color:#FFCCBC;font-size:12px;margin-top:2px;}
+
+/* SYNC STATUS */
+.sync-bar{background:#fff;border-radius:10px;padding:7px 12px;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.sync-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0;}
+.sync-dot.online{background:#2E7D32;}
+.sync-dot.offline{background:#FF6D00;}
+.sync-dot.syncing{background:#1565C0;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.sync-label{font-size:13px;font-weight:700;color:#555;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.stat-tile{background:white;border-radius:14px;padding:12px 8px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);border-top:4px solid var(--fire);}
+.stat-val{font-size:22px;font-weight:900;color:var(--fire-dark);}
+.stat-label{font-size:11px;font-weight:700;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
+
+/* QUOTE */
+.quote-card{background:linear-gradient(135deg,#7F0000,#C62828);
+  border-radius:16px;padding:16px;margin-bottom:12px;color:white;text-align:center;
+  box-shadow:0 3px 12px rgba(198,40,40,0.4);}
+.quote-emoji{font-size:28px;margin-bottom:6px;}
+.quote-text{font-size:16px;font-style:italic;line-height:1.5;margin-bottom:6px;}
+.quote-attr{font-size:12px;opacity:0.75;}
+
+/* NAV */
+.nav-buttons{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:12px;}
+.nav-btn{background:white;border:2.5px solid var(--fire);padding:9px 2px 8px;
+  font-size:9px;font-weight:800;color:var(--fire-dark);border-radius:11px;
+  cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.nav-btn .ni{font-size:22px;line-height:1;}
+.nav-btn.active{background:linear-gradient(135deg,var(--fire-dark),var(--fire));color:white;border-color:var(--fire-deep);}
+
+/* SECTION */
+.section{display:none;}
+.section.active{display:block;}
+
+/* CARD */
+.card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+.card-title{font-size:18px;font-weight:800;color:var(--fire-dark);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+
+/* FORM */
+.form-group{margin-bottom:12px;}
+.form-label{font-size:15px;font-weight:700;color:var(--fire-dark);margin-bottom:5px;display:block;}
+.form-input{width:100%;padding:13px;font-size:16px;border:2px solid #ddd;
+  border-radius:11px;background:white;color:var(--text);}
+.form-input:focus{outline:none;border-color:var(--fire);}
+select.form-input{cursor:pointer;}
+textarea.form-input{resize:vertical;min-height:80px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px;font-size:17px;font-weight:800;
+  border:none;border-radius:13px;cursor:pointer;margin-bottom:8px;text-align:center;}
+.btn-fire{background:linear-gradient(135deg,var(--fire-dark),var(--fire));color:white;}
+.btn-orange{background:var(--orange);color:white;}
+.btn-green{background:#2E7D32;color:white;}
+.btn-blue{background:#1565C0;color:white;}
+.btn-yellow{background:var(--amber);color:white;}
+.btn-purple{background:#6A1B9A;color:white;}
+.btn-gray{background:#666;color:white;}
+.btn-outline{background:white;color:var(--fire-dark);border:2.5px solid var(--fire);}
+.btn-sm{padding:8px 14px;font-size:14px;display:inline-block;width:auto;border-radius:9px;}
+
+/* JOB ITEMS */
+.job-item{background:white;border-radius:14px;padding:14px;margin-bottom:10px;
+  border-left:5px solid var(--fire);box-shadow:0 1px 6px rgba(0,0,0,0.07);}
+.job-name{font-size:19px;font-weight:800;color:var(--fire-dark);}
+.job-detail{font-size:14px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.job-status{font-size:13px;font-weight:700;padding:4px 10px;border-radius:20px;display:inline-block;margin-top:6px;}
+.status-active{background:#FFF3E0;color:#E65100;}
+.status-done{background:#E8F5E9;color:#2E7D32;}
+.status-pending{background:#EDE7F6;color:#6A1B9A;}
+
+/* MILE / EXPENSE ITEMS */
+.log-item{background:white;border-radius:13px;padding:13px;margin-bottom:9px;
+  box-shadow:0 1px 5px rgba(0,0,0,0.07);}
+.log-item.mile{border-left:5px solid var(--orange);}
+.log-item.expense{border-left:5px solid var(--amber);}
+.log-label{font-size:17px;font-weight:700;color:var(--text);}
+.log-detail{font-size:14px;color:var(--muted);margin-top:3px;}
+.log-amount{font-size:18px;font-weight:900;color:var(--fire-dark);float:right;margin-top:-2px;}
+
+/* PAINT CALC */
+.calc-result{background:linear-gradient(135deg,#FF6D00,#FFD600);
+  border-radius:14px;padding:16px;margin-top:12px;text-align:center;}
+.calc-result-title{font-size:16px;font-weight:800;color:#7F0000;margin-bottom:8px;}
+.calc-gallons{font-size:42px;font-weight:900;color:#7F0000;}
+.calc-label{font-size:14px;color:#5D2C00;margin-top:2px;}
+.calc-detail{font-size:13px;color:#5D2C00;margin-top:8px;line-height:1.4;}
+
+/* REPORT TILES */
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.report-tile{background:white;border-radius:14px;padding:14px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.report-val{font-size:24px;font-weight:900;margin-bottom:4px;}
+.report-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+
+/* POPUP */
+.popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.78);z-index:1000;justify-content:center;align-items:flex-start;
+  padding:16px;overflow-y:auto;}
+.popup.show{display:flex;}
+.popup-inner{background:white;padding:20px;border-radius:20px;
+  max-width:420px;width:100%;border-top:6px solid var(--fire);margin:auto;}
+.popup-inner h2{color:var(--fire-dark);font-size:20px;margin-bottom:14px;}
+
+/* PAINT CALC POPUP */
+.calc-section{background:#FFF3E0;border-radius:12px;padding:14px;margin-bottom:12px;}
+.calc-section-title{font-size:15px;font-weight:800;color:#E65100;margin-bottom:10px;}
+
+/* PRINT */
+@media print{
+  .nav-buttons,.btn,.header,.stats-row,.sync-bar{display:none!important;}
+  .card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid;}
+  body{font-size:12pt;}
+}
+
+/* UPLIFTING BANNER */
+.uplift{background:linear-gradient(135deg,#FF6D00,#FFD600);
+  border-radius:14px;padding:14px 16px;margin-bottom:12px;text-align:center;}
+.uplift-text{font-size:16px;font-weight:800;color:#7F0000;line-height:1.4;}
+
+/* FIREBASE SETUP BANNER */
+.setup-banner{background:linear-gradient(135deg,#1565C0,#42A5F5);
+  border-radius:14px;padding:14px 16px;margin-bottom:12px;color:white;}
+.setup-banner-title{font-size:16px;font-weight:800;margin-bottom:6px;}
+.setup-banner-text{font-size:13px;line-height:1.5;opacity:0.9;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-row">
+      <div class="header-icon">🔥</div>
+      <div>
+        <div class="header-title">Spencer Lorenz</div>
+        <div class="header-sub">♈ PRO PAINTER & PROJECT MANAGER</div>
+        <div class="header-date" id="headerDate"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYNC STATUS -->
+  <div class="sync-bar">
+    <div class="sync-dot" id="syncDot"></div>
+    <div class="sync-label" id="syncLabel">Connecting...</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-tile">
+      <div class="stat-val" id="statJobs">0</div>
+      <div class="stat-label">Active Jobs</div>
+    </div>
+    <div class="stat-tile" style="border-top-color:var(--orange);">
+      <div class="stat-val" id="statMiles" style="color:var(--orange);">0</div>
+      <div class="stat-label">Miles This Month</div>
+    </div>
+    <div class="stat-tile" style="border-top-color:var(--amber);">
+      <div class="stat-val" id="statExpenses" style="color:var(--amber);">$0</div>
+      <div class="stat-label">Expenses YTD</div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-card">
+    <div class="quote-emoji">♈🔥</div>
+    <div class="quote-text" id="quoteText"></div>
+    <div class="quote-attr" id="quoteAttr"></div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-buttons">
+    <button class="nav-btn active" onclick="nav('home')" id="nav-home"><span class="ni">🏠</span>HOME</button>
+    <button class="nav-btn" onclick="nav('jobs')" id="nav-jobs"><span class="ni">🎨</span>JOBS</button>
+    <button class="nav-btn" onclick="nav('miles')" id="nav-miles"><span class="ni">🚗</span>MILES</button>
+    <button class="nav-btn" onclick="nav('expenses')" id="nav-expenses"><span class="ni">💰</span>MONEY</button>
+    <button class="nav-btn" onclick="nav('reports')" id="nav-reports"><span class="ni">📊</span>TAXES</button>
+  </div>
+
+  <!-- ══ HOME ══ -->
+  <div class="section active" id="sec-home">
+
+    <div class="uplift" id="upliftBanner">
+      <div class="uplift-text" id="upliftText">Loading your daily spark... 🔥</div>
+    </div>
+
+    <div id="setupBanner" style="display:none;" class="setup-banner">
+      <div class="setup-banner-title">⚙️ Firebase Setup Needed</div>
+      <div class="setup-banner-text">To sync between your phone and computer, paste your Firebase config into this file. Ask Stacey — she has the instructions!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 Today's Jobs</div>
+      <div id="todayJobs"></div>
+      <button class="btn btn-fire" onclick="nav('jobs')" style="margin-top:8px;">🎨 View All Jobs</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Quick Log</div>
+      <button class="btn btn-orange" onclick="showAddMile()">🚗 Log Miles Right Now</button>
+      <button class="btn btn-yellow" onclick="showAddExpense()">💰 Log an Expense</button>
+      <button class="btn btn-outline" onclick="showPaintCalc()">🪣 Calculate Paint Needed</button>
+    </div>
+
+  </div>
+
+  <!-- ══ JOBS ══ -->
+  <div class="section" id="sec-jobs">
+    <div class="card">
+      <div class="card-title">🎨 My Jobs</div>
+      <div id="jobsList"><div style="text-align:center;color:#888;padding:20px;">No jobs yet — add your first one! 🔥</div></div>
+      <button class="btn btn-fire" onclick="showAddJob()">➕ Add a Job</button>
+    </div>
+  </div>
+
+  <!-- ══ MILES ══ -->
+  <div class="section" id="sec-miles">
+    <div class="card">
+      <div class="card-title">🚗 Mileage Log</div>
+      <div style="background:#FFF3E0;border-radius:12px;padding:12px;margin-bottom:14px;">
+        <div style="font-size:14px;font-weight:700;color:#E65100;">📋 IRS Standard Rate</div>
+        <div style="font-size:24px;font-weight:900;color:#BF360C;">$<span id="irsRate">0.67</span> / mile</div>
+        <div style="font-size:12px;color:#888;margin-top:2px;">2024 federal rate — update in Settings if needed</div>
+      </div>
+      <div id="milesList"><div style="text-align:center;color:#888;padding:20px;">No miles logged yet.</div></div>
+      <button class="btn btn-orange" onclick="showAddMile()">➕ Log Miles</button>
+    </div>
+  </div>
+
+  <!-- ══ EXPENSES ══ -->
+  <div class="section" id="sec-expenses">
+    <div class="card">
+      <div class="card-title">💰 Expense Log</div>
+      <div id="expensesList"><div style="text-align:center;color:#888;padding:20px;">No expenses logged yet.</div></div>
+      <button class="btn btn-yellow" onclick="showAddExpense()">➕ Add an Expense</button>
+    </div>
+  </div>
+
+  <!-- ══ TAX REPORTS ══ -->
+  <div class="section" id="sec-reports">
+
+    <div class="card">
+      <div class="card-title">📊 Tax Summary <span style="font-size:13px;font-weight:600;color:#888;">Year to Date</span></div>
+      <div class="report-grid">
+        <div class="report-tile" style="border-top:4px solid var(--orange);">
+          <div class="report-val" style="color:var(--orange);" id="rptMiles">0</div>
+          <div class="report-label">Total Miles</div>
+        </div>
+        <div class="report-tile" style="border-top:4px solid var(--fire);">
+          <div class="report-val" style="color:var(--fire);" id="rptMileValue">$0</div>
+          <div class="report-label">Miles Deduction</div>
+        </div>
+        <div class="report-tile" style="border-top:4px solid var(--amber);">
+          <div class="report-val" style="color:var(--amber);" id="rptExpenses">$0</div>
+          <div class="report-label">Total Expenses</div>
+        </div>
+        <div class="report-tile" style="border-top:4px solid #2E7D32;">
+          <div class="report-val" style="color:#2E7D32;" id="rptTotal">$0</div>
+          <div class="report-label">Total Deductions</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📂 Expenses by Category</div>
+      <div id="catBreakdown"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Settings</div>
+      <div class="form-group">
+        <label class="form-label">IRS Mileage Rate (per mile)</label>
+        <input type="number" class="form-input" id="irsRateInput" step="0.01" placeholder="0.67">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" id="nameInput" placeholder="Spencer Lorenz">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-input" id="companyInput" placeholder="Your company">
+      </div>
+      <button class="btn btn-fire" onclick="saveSettings()">💾 Save Settings</button>
+    </div>
+
+    <button class="btn btn-green" onclick="exportTaxReport()">📤 Export Tax Report (PDF-ready)</button>
+    <button class="btn btn-outline" onclick="window.print()">🖨️ Print This Report</button>
+
+  </div>
+</div><!-- end container -->
+
+<!-- ══ POPUP: ADD JOB ══ -->
+<div class="popup" id="addJobPopup">
+  <div class="popup-inner">
+    <h2>🎨 Add a Job</h2>
+    <div class="form-group">
+      <label class="form-label">Client / Job Name</label>
+      <input type="text" class="form-input" id="jobName" placeholder="e.g. Johnson Residence">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Address</label>
+      <input type="text" class="form-input" id="jobAddr" placeholder="Street address">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Job Type</label>
+      <select class="form-input" id="jobType">
+        <option value="Interior">🏠 Interior</option>
+        <option value="Exterior">🏡 Exterior</option>
+        <option value="Both">🏘️ Interior + Exterior</option>
+        <option value="Commercial">🏢 Commercial</option>
+        <option value="Other">🎨 Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Start Date</label>
+      <input type="date" class="form-input" id="jobDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Estimated Price ($)</label>
+      <input type="number" class="form-input" id="jobPrice" placeholder="e.g. 1500">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select class="form-input" id="jobStatus">
+        <option value="active">🔥 Active / In Progress</option>
+        <option value="pending">⏳ Pending / Upcoming</option>
+        <option value="done">✅ Completed</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="jobNotes" placeholder="Paint colors, special instructions..." rows="3"></textarea>
+    </div>
+    <button class="btn btn-fire" onclick="saveJob()">💾 Save Job</button>
+    <button class="btn btn-gray" onclick="closePopup('addJobPopup')">✖ Cancel</button>
+  </div>
+</div>
+
+<!-- ══ POPUP: LOG MILES ══ -->
+<div class="popup" id="addMilePopup">
+  <div class="popup-inner">
+    <h2>🚗 Log Miles</h2>
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="mileDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">From</label>
+      <input type="text" class="form-input" id="mileFrom" placeholder="Starting location">
+    </div>
+    <div class="form-group">
+      <label class="form-label">To / Job Site</label>
+      <input type="text" class="form-input" id="mileTo" placeholder="Destination / job address">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Miles Driven</label>
+      <input type="number" class="form-input" id="mileCount" placeholder="e.g. 24.5" step="0.1" oninput="calcMileValue()">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Purpose</label>
+      <select class="form-input" id="milePurpose">
+        <option value="Job site">🎨 Driving to job site</option>
+        <option value="Supply run">🛒 Supply / paint run</option>
+        <option value="Estimate">📋 Estimate / quote visit</option>
+        <option value="Equipment">🔧 Equipment pickup/dropoff</option>
+        <option value="Other">📌 Other business driving</option>
+      </select>
+    </div>
+    <div style="background:#FFF3E0;border-radius:11px;padding:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:#E65100;">💰 IRS Deduction Value</div>
+      <div style="font-size:26px;font-weight:900;color:#BF360C;" id="mileValueDisplay">$0.00</div>
+    </div>
+    <button class="btn btn-orange" onclick="saveMile()">💾 Save Miles</button>
+    <button class="btn btn-gray" onclick="closePopup('addMilePopup')">✖ Cancel</button>
+  </div>
+</div>
+
+<!-- ══ POPUP: ADD EXPENSE ══ -->
+<div class="popup" id="addExpensePopup">
+  <div class="popup-inner">
+    <h2>💰 Log an Expense</h2>
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="expDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="expCat">
+        <option value="Paint & Supplies">🪣 Paint & Supplies</option>
+        <option value="Tools & Equipment">🔧 Tools & Equipment</option>
+        <option value="Protective Gear">🥽 Protective Gear (PPE)</option>
+        <option value="Fuel">⛽ Fuel</option>
+        <option value="Vehicle">🚗 Vehicle (maintenance, insurance)</option>
+        <option value="Phone & Software">📱 Phone & Software</option>
+        <option value="Licensing & Insurance">📋 Licensing & Insurance</option>
+        <option value="Meals">🍔 Meals (business)</option>
+        <option value="Other">📌 Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Amount ($)</label>
+      <input type="number" class="form-input" id="expAmount" placeholder="e.g. 47.50" step="0.01">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description / Store</label>
+      <input type="text" class="form-input" id="expDesc" placeholder="e.g. Home Depot — Sherwin Williams paint">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Job (optional)</label>
+      <input type="text" class="form-input" id="expJob" placeholder="Which job was this for?">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Receipt #</label>
+      <input type="text" class="form-input" id="expReceipt" placeholder="Receipt or invoice number">
+    </div>
+    <button class="btn btn-yellow" onclick="saveExpense()">💾 Save Expense</button>
+    <button class="btn btn-gray" onclick="closePopup('addExpensePopup')">✖ Cancel</button>
+  </div>
+</div>
+
+<!-- ══ POPUP: PAINT CALC ══ -->
+<div class="popup" id="paintCalcPopup">
+  <div class="popup-inner">
+    <h2>🪣 Paint Calculator</h2>
+
+    <div class="calc-section">
+      <div class="calc-section-title">📐 Room / Surface Size</div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select class="form-input" id="calcType" onchange="calcPaint()">
+          <option value="interior">🏠 Interior Room</option>
+          <option value="exterior">🏡 Exterior Walls</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Length (ft)</label>
+          <input type="number" class="form-input" id="calcLen" placeholder="20" oninput="calcPaint()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Width (ft)</label>
+          <input type="number" class="form-input" id="calcWid" placeholder="15" oninput="calcPaint()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Wall Height (ft)</label>
+        <input type="number" class="form-input" id="calcHgt" placeholder="9" oninput="calcPaint()">
+      </div>
+    </div>
+
+    <div class="calc-section">
+      <div class="calc-section-title">🚪 Subtract Openings</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Doors</label>
+          <input type="number" class="form-input" id="calcDoors" placeholder="2" value="0" oninput="calcPaint()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Windows</label>
+          <input type="number" class="form-input" id="calcWins" placeholder="3" value="0" oninput="calcPaint()">
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-section">
+      <div class="calc-section-title">🎨 Paint Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Coats</label>
+          <select class="form-input" id="calcCoats" onchange="calcPaint()">
+            <option value="1">1 coat</option>
+            <option value="2" selected>2 coats</option>
+            <option value="3">3 coats</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sqft/Gallon</label>
+          <input type="number" class="form-input" id="calcCoverage" value="350" oninput="calcPaint()">
+        </div>
+      </div>
+    </div>
+
+    <div id="calcResult" style="display:none;" class="calc-result">
+      <div class="calc-result-title">🪣 YOU NEED</div>
+      <div class="calc-gallons" id="calcGallons">—</div>
+      <div class="calc-label">GALLONS OF PAINT</div>
+      <div class="calc-detail" id="calcDetails"></div>
+    </div>
+
+    <button class="btn btn-gray" style="margin-top:14px;" onclick="closePopup('paintCalcPopup')">✖ Close</button>
+  </div>
+</div>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ══════════════════════════════════════════
+// FIREBASE CONFIG — Paste your real config here
+// Go to console.firebase.google.com → your project
+// → Project Settings → Web app → copy firebaseConfig
+// ══════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyAOhy_-DalDWyM7FlHtjiQ9ZyAZmRDa0NM",
+  authDomain: "the-painters-app-30959.firebaseapp.com",
+  projectId: "the-painters-app-30959",
+  storageBucket: "the-painters-app-30959.firebasestorage.app",
+  messagingSenderId: "676211466983",
+  appId: "1:676211466983:web:f0cb531a59a2c3aab7b842",
+  measurementId: "G-5JGD3S871D"
+};
+
+// ══════════════════════════════════════════
+// FIREBASE INIT
+// ══════════════════════════════════════════
+let db, jobsCol, milesCol, expensesCol, settingsRef;
+let firebaseReady = false;
+
+function initFirebase(){
+  try {
+    if(firebaseConfig.apiKey === 'YOUR_API_KEY'){
+      setSyncStatus('offline','⚠️ Firebase not configured — data saves locally only');
+      document.getElementById('setupBanner').style.display='block';
+      initLocal();
+      return;
+    }
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+
+    // Enable offline persistence so it works without internet too
+    db.enablePersistence({synchronizeTabs:true}).catch(e=>{
+      console.log('Persist note:', e.code);
+    });
+
+    jobsCol = db.collection('jobs');
+    milesCol = db.collection('miles');
+    expensesCol = db.collection('expenses');
+    settingsRef = db.collection('settings').doc('spencer');
+
+    firebaseReady = true;
+    setSyncStatus('syncing','🔄 Connecting to cloud...');
+
+    // Load settings
+    settingsRef.get().then(doc=>{
+      if(doc.exists){ settings={...settings,...doc.data()}; applySettings(); }
+    });
+
+    // Real-time listeners — updates ANY device instantly
+    jobsCol.orderBy('createdAt','desc').onSnapshot(snap=>{
+      jobs = snap.docs.map(d=>({...d.data(), docId:d.id}));
+      renderJobs(); renderTodayJobs(); updateStats();
+      setSyncStatus('online','✅ Synced — changes appear on all devices');
+    }, err=>setSyncStatus('offline','⚠️ Offline — changes save when reconnected'));
+
+    milesCol.orderBy('date','desc').onSnapshot(snap=>{
+      miles = snap.docs.map(d=>({...d.data(), docId:d.id}));
+      renderMiles(); updateStats();
+    });
+
+    expensesCol.orderBy('date','desc').onSnapshot(snap=>{
+      expenses = snap.docs.map(d=>({...d.data(), docId:d.id}));
+      renderExpenses(); updateStats();
+    });
+
+  } catch(e){
+    console.error('Firebase error:', e);
+    setSyncStatus('offline','⚠️ Connection error — using local storage');
+    initLocal();
+  }
+}
+
+// Fallback: local storage only (if Firebase not configured)
+function initLocal(){
+  jobs     = JSON.parse(localStorage.getItem('sp_jobs')     || '[]');
+  miles    = JSON.parse(localStorage.getItem('sp_miles')    || '[]');
+  expenses = JSON.parse(localStorage.getItem('sp_expenses') || '[]');
+  const s  = JSON.parse(localStorage.getItem('sp_settings') || 'null');
+  if(s) settings = {...settings,...s};
+  applySettings();
+  renderAll();
+}
+
+function saveLocal(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+function setSyncStatus(state, label){
+  const dot = document.getElementById('syncDot');
+  const lbl = document.getElementById('syncLabel');
+  dot.className = 'sync-dot ' + state;
+  lbl.textContent = label;
+}
+
+// ══════════════════════════════════════════
+// IN-MEMORY DATA
+// ══════════════════════════════════════════
+let jobs=[], miles=[], expenses=[];
+let settings={irsRate:'0.67', name:'Spencer Lorenz', company:''};
+
+// ══════════════════════════════════════════
+// QUOTES — Aries / uplifting / courage
+// ══════════════════════════════════════════
+const quotes = [
+  {text:"The Aries soul burns brightest when others say it can't be done. You were built for this.", attr:"— For Spencer 🔥"},
+  {text:"Every brushstroke you lay is a mark of a man who shows up and gets it done.", attr:"— For Spencer 🎨"},
+  {text:"Courage doesn't always roar. Sometimes it's quietly picking up the brush and starting again.", attr:"— For Spencer"},
+  {text:"You are not defined by your diagnosis. You are defined by how fiercely you choose to live.", attr:"— For Spencer ♈"},
+  {text:"The fire in an Aries cannot be extinguished — it only transforms into something greater.", attr:"— For Spencer 🔥"},
+  {text:"Hard days are proof that you're doing something worth doing.", attr:"— For Spencer"},
+  {text:"You've built things with your hands that will outlast anything. That's legacy.", attr:"— For Spencer 🎨"},
+  {text:"An Aries doesn't wait for the storm to pass. He goes out and paints in the rain.", attr:"— For Spencer ♈"},
+  {text:"Every day you wake up and keep going is an act of profound courage.", attr:"— For Spencer 💛"},
+  {text:"The world is better, brighter, and bolder because you are in it.", attr:"— For Spencer 🔥"},
+  {text:"You are stronger than you know, braver than you feel, and more loved than you can imagine.", attr:"— For Spencer"},
+  {text:"Even on the hardest days, you matter enormously to the people who love you.", attr:"— For Spencer 💛"},
+  {text:"A true craftsman leaves beauty behind him wherever he goes. That's you, Spencer.", attr:"— For Spencer 🎨"},
+  {text:"Aries: the one who leads the charge even when afraid. That's not weakness — it's everything.", attr:"— For Spencer ♈"},
+  {text:"Your story isn't over. Not even close. Keep going.", attr:"— For Spencer 🔥"},
+  {text:"You have survived 100% of your hardest days. That is an undefeated record.", attr:"— For Spencer"},
+  {text:"The work you do with your hands is an act of love for every person whose home you've touched.", attr:"— For Spencer 🎨"},
+  {text:"Some people exist to inspire others just by refusing to quit. You are one of those people.", attr:"— For Spencer"},
+  {text:"Your fire hasn't dimmed. It's just burning deeper now — and that's the most powerful kind.", attr:"— For Spencer 🔥"},
+  {text:"Show up today. That's enough. That has always been enough.", attr:"— For Spencer 💛"},
+  {text:"Aries season reminder: you were born to blaze trails, not follow them.", attr:"— For Spencer ♈"},
+  {text:"Pain is temporary. The mark you leave on this world is permanent.", attr:"— For Spencer"},
+  {text:"You are somebody's reason to believe that good people still exist. Keep being that.", attr:"— For Spencer 💛"},
+  {text:"A painter transforms empty walls into something beautiful. That's what you do to every room you enter.", attr:"— For Spencer 🎨"},
+  {text:"There is so much courage in simply choosing to keep living fully. You have that courage.", attr:"— For Spencer"},
+  {text:"The best is not behind you. There are still brushstrokes left to make.", attr:"— For Spencer 🔥"},
+  {text:"You matter. Deeply. Completely. Without condition.", attr:"— From everyone who loves you 💛"},
+  {text:"Don't count the days. Make the days count.", attr:"— Muhammad Ali"},
+  {text:"Life is not measured by the number of breaths we take, but by the moments that take our breath away.", attr:"— Maya Angelou"},
+  {text:"In the middle of difficulty lies opportunity — and you, Spencer, are built for both.", attr:"— For Spencer ♈🔥"}
+];
+
+const upliftMessages = [
+  "🔥 You are unstoppable, Spencer. The fire in you burns brighter than any obstacle.",
+  "♈ Aries energy: bold, brave, brilliant. That's YOU today.",
+  "💛 Someone is thinking about you right now and smiling. You have that effect on people.",
+  "🎨 Every job you complete is a masterpiece. You are a craftsman with a gift.",
+  "🔥 You've got more strength than you give yourself credit for. Today is proof.",
+  "♈ The Ram doesn't stop. Neither do you. Keep going, Spencer.",
+  "💛 You are deeply, completely, unconditionally loved. Don't forget that today.",
+  "🎨 Your work speaks for itself. Be proud of what your hands have built.",
+  "🔥 Hard days are part of the story — not the end of it. You're still writing yours.",
+  "♈ Born an Aries: born a fighter, a leader, a light. That's you, every single day."
+];
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function init(){
+  const now = new Date();
+  document.getElementById('headerDate').textContent =
+    now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  const dayIdx = Math.floor(Date.now()/86400000);
+  const q = quotes[dayIdx % quotes.length];
+  document.getElementById('quoteText').textContent = '"'+q.text+'"';
+  document.getElementById('quoteAttr').textContent = q.attr;
+  document.getElementById('upliftText').textContent = upliftMessages[dayIdx % upliftMessages.length];
+
+  const today = now.toISOString().split('T')[0];
+  ['mileDate','expDate','jobDate'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value=today;
+  });
+
+  initFirebase();
+}
+
+function applySettings(){
+  if(settings.irsRate) document.getElementById('irsRateInput').value = settings.irsRate;
+  if(settings.name)    document.getElementById('nameInput').value    = settings.name;
+  if(settings.company) document.getElementById('companyInput').value = settings.company;
+  document.getElementById('irsRate').textContent = settings.irsRate || '0.67';
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function nav(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='reports') renderReports();
+}
+
+// ══════════════════════════════════════════
+// RENDER ALL
+// ══════════════════════════════════════════
+function renderAll(){
+  renderJobs(); renderMiles(); renderExpenses();
+  renderTodayJobs(); updateStats();
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+function updateStats(){
+  const activeJobs = jobs.filter(j=>j.status==='active').length;
+  document.getElementById('statJobs').textContent = activeJobs;
+
+  const now = new Date();
+  const monthMiles = miles.filter(m=>{
+    const d=new Date(m.date+'T12:00');
+    return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  }).reduce((s,m)=>s+parseFloat(m.miles||0),0);
+  document.getElementById('statMiles').textContent = monthMiles.toFixed(0);
+
+  const yearExp = expenses.filter(e=>{
+    return new Date(e.date+'T12:00').getFullYear()===now.getFullYear();
+  }).reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  document.getElementById('statExpenses').textContent = '$'+yearExp.toFixed(0);
+}
+
+// ══════════════════════════════════════════
+// TODAY'S JOBS
+// ══════════════════════════════════════════
+function renderTodayJobs(){
+  const el = document.getElementById('todayJobs');
+  const today = new Date().toISOString().split('T')[0];
+  const active = jobs.filter(j=>j.status==='active'||j.date===today);
+  if(!active.length){
+    el.innerHTML='<div style="text-align:center;color:#888;padding:16px;font-size:16px;">No active jobs today. Time to add one! 🎨</div>';
+    return;
+  }
+  el.innerHTML=active.map(j=>`<div style="display:flex;align-items:center;gap:10px;padding:11px;background:#FFF8F0;border-radius:11px;margin-bottom:8px;border-left:4px solid var(--fire);">
+    <div style="font-size:24px;">🎨</div>
+    <div style="flex:1;">
+      <div style="font-size:17px;font-weight:800;color:var(--fire-dark);">${esc(j.name)}</div>
+      <div style="font-size:13px;color:var(--muted);">${j.addr?'📍 '+esc(j.addr):''}</div>
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// JOBS — Firestore
+// ══════════════════════════════════════════
+function showAddJob(){ document.getElementById('addJobPopup').classList.add('show'); }
+
+function saveJob(){
+  const name = document.getElementById('jobName').value.trim();
+  if(!name){alert('Please enter a job name!');return;}
+  const jobData = {
+    name, addr:document.getElementById('jobAddr').value,
+    type:document.getElementById('jobType').value,
+    date:document.getElementById('jobDate').value,
+    price:document.getElementById('jobPrice').value,
+    status:document.getElementById('jobStatus').value,
+    notes:document.getElementById('jobNotes').value,
+    createdAt: firebaseReady ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+  };
+  if(firebaseReady){
+    jobsCol.add(jobData);
+  } else {
+    jobs.unshift({...jobData, docId:Date.now().toString()});
+    saveLocal('sp_jobs', jobs);
+    renderAll();
+  }
+  closePopup('addJobPopup');
+  ['jobName','jobAddr','jobPrice','jobNotes'].forEach(id=>document.getElementById(id).value='');
+}
+
+function updateJobStatus(docId, status){
+  if(firebaseReady){
+    jobsCol.doc(docId).update({status});
+  } else {
+    const j=jobs.find(x=>x.docId===docId); if(j){j.status=status;saveLocal('sp_jobs',jobs);renderAll();}
+  }
+}
+
+function deleteJob(docId){
+  if(!confirm('Remove this job?'))return;
+  if(firebaseReady){
+    jobsCol.doc(docId).delete();
+  } else {
+    jobs=jobs.filter(x=>x.docId!==docId);saveLocal('sp_jobs',jobs);renderAll();
+  }
+}
+
+const statusClass={active:'status-active',done:'status-done',pending:'status-pending'};
+const statusLabel={active:'🔥 Active',done:'✅ Done',pending:'⏳ Pending'};
+
+function renderJobs(){
+  const el=document.getElementById('jobsList');
+  if(!jobs.length){el.innerHTML='<div style="text-align:center;color:#888;padding:20px;">No jobs yet!</div>';return;}
+  const sorted=[...jobs].sort((a,b)=>a.status==='done'?1:b.status==='done'?-1:0);
+  el.innerHTML=sorted.map(j=>`<div class="job-item">
+    <div class="job-name">${esc(j.name)}</div>
+    <div class="job-detail">
+      ${j.type?'🎨 '+j.type+' · ':''}${j.addr?'📍 '+esc(j.addr):''}
+      ${j.price?'<br>💰 Est. $'+parseFloat(j.price).toLocaleString():''}
+      ${j.date?'<br>📅 '+fmtDate(j.date):''}
+      ${j.notes?'<br>📋 '+esc(j.notes):''}
+    </div>
+    <span class="job-status ${statusClass[j.status]||'status-pending'}">${statusLabel[j.status]||j.status}</span>
+    <div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;">
+      ${j.status!=='active'?`<button class="btn btn-fire btn-sm" onclick="updateJobStatus('${j.docId}','active')">🔥 Set Active</button>`:''}
+      ${j.status!=='done'?`<button class="btn btn-green btn-sm" onclick="updateJobStatus('${j.docId}','done')">✅ Mark Done</button>`:''}
+      <button class="btn btn-outline btn-sm" onclick="showPaintCalc()">🪣 Calc Paint</button>
+      <button class="btn btn-gray btn-sm" onclick="deleteJob('${j.docId}')">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// MILES — Firestore
+// ══════════════════════════════════════════
+function showAddMile(){ document.getElementById('addMilePopup').classList.add('show'); }
+
+function calcMileValue(){
+  const m=parseFloat(document.getElementById('mileCount').value)||0;
+  const rate=parseFloat(settings.irsRate||0.67);
+  document.getElementById('mileValueDisplay').textContent='$'+(m*rate).toFixed(2);
+}
+
+function saveMile(){
+  const m=parseFloat(document.getElementById('mileCount').value)||0;
+  if(!m){alert('Please enter the miles driven!');return;}
+  const rate=parseFloat(settings.irsRate||0.67);
+  const mileData={
+    date:document.getElementById('mileDate').value,
+    from:document.getElementById('mileFrom').value,
+    to:document.getElementById('mileTo').value,
+    miles:m, purpose:document.getElementById('milePurpose').value,
+    value:(m*rate).toFixed(2),
+    createdAt: firebaseReady ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+  };
+  if(firebaseReady){
+    milesCol.add(mileData);
+  } else {
+    miles.unshift({...mileData, docId:Date.now().toString()});
+    saveLocal('sp_miles', miles);
+    renderAll();
+  }
+  closePopup('addMilePopup');
+  document.getElementById('mileCount').value='';
+  document.getElementById('mileFrom').value='';
+  document.getElementById('mileTo').value='';
+  document.getElementById('mileValueDisplay').textContent='$0.00';
+}
+
+function deleteMile(docId){
+  if(!confirm('Remove this entry?'))return;
+  if(firebaseReady){
+    milesCol.doc(docId).delete();
+  } else {
+    miles=miles.filter(x=>x.docId!==docId);saveLocal('sp_miles',miles);renderAll();
+  }
+}
+
+function renderMiles(){
+  const el=document.getElementById('milesList');
+  if(!miles.length){el.innerHTML='<div style="text-align:center;color:#888;padding:20px;">No miles logged yet.</div>';return;}
+  el.innerHTML=miles.map(m=>`<div class="log-item mile">
+    <div class="log-amount">$${m.value}</div>
+    <div class="log-label">🚗 ${m.miles} miles</div>
+    <div class="log-detail">${m.purpose} ${m.from?'· '+esc(m.from)+' → '+esc(m.to):''}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px;">
+      <div class="log-detail">📅 ${fmtDate(m.date)}</div>
+      <button onclick="deleteMile('${m.docId}')" style="padding:5px 10px;font-size:13px;font-weight:700;border:none;border-radius:7px;cursor:pointer;background:#C62828;color:white;">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// EXPENSES — Firestore
+// ══════════════════════════════════════════
+function showAddExpense(){ document.getElementById('addExpensePopup').classList.add('show'); }
+
+function saveExpense(){
+  const amount=parseFloat(document.getElementById('expAmount').value)||0;
+  if(!amount){alert('Please enter an amount!');return;}
+  const expData={
+    date:document.getElementById('expDate').value,
+    cat:document.getElementById('expCat').value,
+    amount, desc:document.getElementById('expDesc').value,
+    job:document.getElementById('expJob').value,
+    receipt:document.getElementById('expReceipt').value,
+    createdAt: firebaseReady ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+  };
+  if(firebaseReady){
+    expensesCol.add(expData);
+  } else {
+    expenses.unshift({...expData, docId:Date.now().toString()});
+    saveLocal('sp_expenses', expenses);
+    renderAll();
+  }
+  closePopup('addExpensePopup');
+  ['expAmount','expDesc','expJob','expReceipt'].forEach(id=>document.getElementById(id).value='');
+}
+
+function deleteExpense(docId){
+  if(!confirm('Remove this expense?'))return;
+  if(firebaseReady){
+    expensesCol.doc(docId).delete();
+  } else {
+    expenses=expenses.filter(x=>x.docId!==docId);saveLocal('sp_expenses',expenses);renderAll();
+  }
+}
+
+function renderExpenses(){
+  const el=document.getElementById('expensesList');
+  if(!expenses.length){el.innerHTML='<div style="text-align:center;color:#888;padding:20px;">No expenses yet.</div>';return;}
+  el.innerHTML=expenses.map(e=>`<div class="log-item expense">
+    <div class="log-amount" style="color:var(--amber);">$${parseFloat(e.amount).toFixed(2)}</div>
+    <div class="log-label">${esc(e.cat)}</div>
+    <div class="log-detail">${e.desc?esc(e.desc):''}${e.job?' · Job: '+esc(e.job):''}${e.receipt?' · Receipt #'+esc(e.receipt):''}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px;">
+      <div class="log-detail">📅 ${fmtDate(e.date)}</div>
+      <button onclick="deleteExpense('${e.docId}')" style="padding:5px 10px;font-size:13px;font-weight:700;border:none;border-radius:7px;cursor:pointer;background:#C62828;color:white;">🗑️</button>
+    </div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// PAINT CALCULATOR
+// ══════════════════════════════════════════
+function showPaintCalc(){ document.getElementById('paintCalcPopup').classList.add('show'); }
+
+function calcPaint(){
+  const len=parseFloat(document.getElementById('calcLen').value)||0;
+  const wid=parseFloat(document.getElementById('calcWid').value)||0;
+  const hgt=parseFloat(document.getElementById('calcHgt').value)||0;
+  const doors=parseInt(document.getElementById('calcDoors').value)||0;
+  const wins=parseInt(document.getElementById('calcWins').value)||0;
+  const coats=parseInt(document.getElementById('calcCoats').value)||2;
+  const cov=parseFloat(document.getElementById('calcCoverage').value)||350;
+  if(!len||!hgt){document.getElementById('calcResult').style.display='none';return;}
+  let sqft = 2*(len+wid)*hgt;
+  sqft -= (doors*21)+(wins*15);
+  sqft = Math.max(0,sqft);
+  const totalSqft = sqft*coats;
+  const gallons = totalSqft/cov;
+  const gallonsRounded = Math.ceil(gallons*10)/10;
+  document.getElementById('calcGallons').textContent = gallonsRounded.toFixed(1);
+  document.getElementById('calcDetails').innerHTML =
+    `${sqft.toFixed(0)} sq ft of surface area<br>` +
+    `× ${coats} coat${coats>1?'s':''} = ${totalSqft.toFixed(0)} sq ft total<br>` +
+    `÷ ${cov} sq ft per gallon<br>` +
+    `<strong>Buy ${Math.ceil(gallonsRounded)} full gallon${Math.ceil(gallonsRounded)!==1?'s':''} to be safe!</strong>`;
+  document.getElementById('calcResult').style.display='block';
+}
+
+// ══════════════════════════════════════════
+// REPORTS
+// ══════════════════════════════════════════
+function renderReports(){
+  const now=new Date();
+  const yearMiles=miles.filter(m=>new Date(m.date+'T12:00').getFullYear()===now.getFullYear());
+  const totalMiles=yearMiles.reduce((s,m)=>s+parseFloat(m.miles||0),0);
+  const rate=parseFloat(settings.irsRate||0.67);
+  const mileValue=totalMiles*rate;
+  const yearExp=expenses.filter(e=>new Date(e.date+'T12:00').getFullYear()===now.getFullYear());
+  const totalExp=yearExp.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  document.getElementById('rptMiles').textContent=totalMiles.toFixed(1);
+  document.getElementById('rptMileValue').textContent='$'+mileValue.toFixed(2);
+  document.getElementById('rptExpenses').textContent='$'+totalExp.toFixed(2);
+  document.getElementById('rptTotal').textContent='$'+(mileValue+totalExp).toFixed(2);
+  const cats={};
+  yearExp.forEach(e=>{if(!cats[e.cat])cats[e.cat]=0; cats[e.cat]+=parseFloat(e.amount||0);});
+  const catEl=document.getElementById('catBreakdown');
+  if(!Object.keys(cats).length){catEl.innerHTML='<div style="color:#888;padding:10px;">No expenses logged yet.</div>';return;}
+  catEl.innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px;background:#FFF8F0;border-radius:10px;margin-bottom:7px;">
+      <div style="font-size:15px;font-weight:700;">${cat}</div>
+      <div style="font-size:17px;font-weight:900;color:var(--amber);">$${amt.toFixed(2)}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// SETTINGS — Firestore
+// ══════════════════════════════════════════
+function saveSettings(){
+  settings.irsRate=document.getElementById('irsRateInput').value||'0.67';
+  settings.name=document.getElementById('nameInput').value||'Spencer Lorenz';
+  settings.company=document.getElementById('companyInput').value;
+  if(firebaseReady){
+    settingsRef.set(settings);
+  } else {
+    saveLocal('sp_settings', settings);
+  }
+  document.getElementById('irsRate').textContent=settings.irsRate;
+  alert('✅ Settings saved!');
+}
+
+// ══════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════
+function exportTaxReport(){
+  const now=new Date();
+  const rate=parseFloat(settings.irsRate||0.67);
+  const yearMiles=miles.filter(m=>new Date(m.date+'T12:00').getFullYear()===now.getFullYear());
+  const totalMiles=yearMiles.reduce((s,m)=>s+parseFloat(m.miles||0),0);
+  const mileValue=totalMiles*rate;
+  const yearExp=expenses.filter(e=>new Date(e.date+'T12:00').getFullYear()===now.getFullYear());
+  const totalExp=yearExp.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  let txt=`TAX DEDUCTION REPORT — ${now.getFullYear()}\n`;
+  txt+=`Name: ${settings.name||'Spencer Lorenz'}\n`;
+  if(settings.company)txt+=`Company: ${settings.company}\n`;
+  txt+=`Generated: ${now.toLocaleDateString()}\n\n`;
+  txt+=`═══════════════════════════════\nMILEAGE SUMMARY\n═══════════════════════════════\n`;
+  txt+=`IRS Rate: $${rate}/mile\nTotal Miles: ${totalMiles.toFixed(1)}\nDeduction Value: $${mileValue.toFixed(2)}\n\nMILEAGE LOG:\n`;
+  yearMiles.forEach(m=>{txt+=`  ${m.date} | ${m.miles} mi | ${m.purpose} | ${m.from||''}→${m.to||''} | $${m.value}\n`;});
+  txt+=`\n═══════════════════════════════\nEXPENSE SUMMARY\n═══════════════════════════════\n`;
+  txt+=`Total Expenses: $${totalExp.toFixed(2)}\n\nEXPENSE LOG:\n`;
+  yearExp.forEach(e=>{txt+=`  ${e.date} | ${e.cat} | $${parseFloat(e.amount).toFixed(2)} | ${e.desc||''} | Receipt: ${e.receipt||'N/A'}\n`;});
+  txt+=`\n═══════════════════════════════\nTOTAL DEDUCTIONS: $${(mileValue+totalExp).toFixed(2)}\n═══════════════════════════════\n`;
+  const blob=new Blob([txt],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`SpencerLorenz-TaxReport-${now.getFullYear()}.txt`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  alert('✅ Tax report exported! Show this to your accountant. 💰');
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function closePopup(id){ document.getElementById(id).classList.remove('show'); }
+function esc(t){if(!t)return'';const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+function fmtDate(d){if(!d)return'';try{return new Date(d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){return d;}}
+
+init();
+</script>
+</body>
+</html>
